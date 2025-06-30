@@ -1,0 +1,13 @@
+google fonts are added.
+tailwind css is added.
+
+** Color code are added in the css file.
+
+** Creating a navbar and useing react router for navigation.
+
+const isOwnerPath = useLocation().pathname.includes("owner");
+
+-------------------------------------------------------
+
+using a clerk for the user login and authentication
+
