@@ -11,3 +11,12 @@ const isOwnerPath = useLocation().pathname.includes("owner");
 
 using a clerk for the user login and authentication
 
+==========================================================
+Backend
+create a server folder for all the backend.
+server file is created.
+
+run command "npm init -y" to initialize the nodeJs project.
+
+
+
