@@ -3,6 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import { clerkMiddleware } from '@clerk/express'
+import clerkWebHooks from "./controllers/clerkWebhooks.js";
 
 
 connectDB(); // Connect to MongoDB
@@ -10,8 +11,10 @@ connectDB(); // Connect to MongoDB
 const app = express(); //to enable cross origin resource sharing
 
 app.use(cors());
-app.use(clerkMiddleware())
 app.use(express.json()); // to parse JSON bodies
+app.use(clerkMiddleware())
+
+app.use("/api/clerk", clerkWebHooks)
 
 
 app.get("/",(req,res)=>{
