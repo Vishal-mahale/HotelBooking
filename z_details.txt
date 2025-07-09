@@ -18,5 +18,60 @@ server file is created.
 
 run command "npm init -y" to initialize the nodeJs project.
 
+The install some of the packages that are needed for the project.
+
+"npm i express mongoose dotenv cors bcryptjs jsonwebtoken multer cloudinary"
+
+Added "type":"module" in package.json file to use ES6 modules.
+
+creating a server in server.js file.
+
+ npm i --save-dev nodemon  --> will be using it only in development mode. not in production.
 
 
+----------------------------------------------------------------------------------
+
+*** For the database I am using mongodb. Using a mongodb atlas account to create a database and connect it with the backend. Cluster is created on mongodb atlas and a database is created. (cluster0,region mumbai , google cloud)
+Then a databse user is created.
+** username: vmahale799
+** passwoord : Vishal799qwerty
+The ip address need to be added but, got added automatically.
+
+After that connect to the clusetr. Select the driver as a mongoose and add the connection string to your application. Add your password to the connection string.
+Change the network access settings to access from anywhere.
+
+--------------------------------------------------------------------------
+
+create a folder name config which will contain a file db.js to connect to the database.
+
+I have created a user route and a controller.
+
+Clerk middleware is used for user authentication.                                       
+
+We need to add the clerk middleware to the backend to authenticate the user. For thet we need to install the clerk/express. need to configure the clerk by going to the clerk website dashboard. (webHooks)
+
+
+-------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ =======================================
+ cors 
+ express
+
+useNewUrlParser: true,
+useUnifiedTopology: true,
