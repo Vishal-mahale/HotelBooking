@@ -30,13 +30,4 @@ app.listen(port,()=>{
 })
 
 
-
-
-
-
-
-
-
-
-
 console.log("This is server js file");

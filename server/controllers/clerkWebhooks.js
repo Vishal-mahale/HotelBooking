@@ -3,16 +3,19 @@ import { Webhook } from 'svix'
 
 const clerkWebHooks = async (req, res) => {
   try {
-    const webhook = new webhook(process.env.CLERK_WEBHOOK_SECRET)
+
+    const webhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
+    
     // Getting headers
     const headers = {
       'svix-id': req.headers['svix-id'],
       'svix-timestamp': req.headers['svix-timestamp'],
       'svix-signature': req.headers['svix-signature']
     }
-    // Verify the webhook headers
-    await webhook.varify(JSON.stringify(req.body), headers)
     
+    // Verify the webhook headers
+    await webhook.verify(JSON.stringify(req.body), headers)
+
     // Getting data from request body
     const { data, type } = req.body
 
@@ -27,11 +30,11 @@ const clerkWebHooks = async (req, res) => {
 
     switch (type) {
       case 'user.created': {
-        User.create(userData)
+        await User.create(userData)
         break
       }
       case 'user.updated': {
-        User.findByIdAndUpdate(data.id, userData)
+        await User.findByIdAndUpdate(data.id, userData)
         break
       }
       case 'user.deleted': {
