@@ -58,22 +58,20 @@ Host the only backed part of the application on the vercel first.
 
 -----------------------------------------------------------------------------
 
+ This is the backend url for the application.(Hosted on the vercel)
+.https://hotel-booking-backend-chi-one.vercel.app/api/clerk
 
+___________________________________________________________________________
 
-
-
-
-
-
-
-
-
-https://hotel-booking-backend-chi-one.vercel.app/api/clerk
-
-
- =======================================
  cors 
  express
 
+ useUser(), and useAuth() hooks from clerk react package. --> How use for authentication.
+
 useNewUrlParser: true,
 useUnifiedTopology: true,
+
+populate() mongodb
+
+react-hot-toast
+axios

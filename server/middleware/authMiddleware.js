@@ -1,7 +1,9 @@
 import User from '../models/User.js'
 
 export const protect = async (req, res, next) => {
-  const userId = req.auth // Assuming req.auth is populated by Clerk middleware
+
+  const { userId } = await req.auth();
+  
   if (!userId) {
     return res.json({ success: false, message: 'Unauthorized' })
   }
@@ -11,6 +13,12 @@ export const protect = async (req, res, next) => {
     return res.json({ success: false, message: 'User not found' })
   }
 
+  console.log("This is user " + user);
+   
   req.user = user // Attach user to request object
+
+  console.log("This is the protect fucntion \n\n");
+  
+
   next() // Proceed to the next middleware or route handler
 }

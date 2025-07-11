@@ -8,6 +8,7 @@ import userRouter from './routes/userRouter.js'
 import hotelRouter from './routes/hotelRouter.js'
 import connectCloudinary from './config/cloudinary.js'
 import roomRouter from './routes/roomRouter.js'
+import bookingRouter from './routes/bookingRoute.js'
 
 connectDB() // Connect to MongoDB
 connectCloudinary() // Connect to Cloudinary    
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 app.use('/api/user', userRouter)
 app.use('/api/hotels', hotelRouter)
 app.use('/api/rooms', roomRouter) // Serve static files from the uploads directory
+app.use('/api/bookings', bookingRouter) 
 
 
 

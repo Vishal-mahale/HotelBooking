@@ -10,16 +10,21 @@ import Mybookings from "./pages/Mybookings";
 import HotelReg from "./components/HotelReg";
 import Layout from "./pages/hotelOwner/Layout";
 import Dashboard from "./pages/hotelOwner/Dashboard";
-import ListRoom from "./pages/hotelOwner/ListRoom"
+import ListRoom from "./pages/hotelOwner/ListRoom";
 import AddRoom from "./pages/hotelOwner/AddRoom";
+import { Toaster } from "react-hot-toast";
+import { useContext } from "react";
+import { useAppContext } from "./context/AppContext";
 
 function App() {
   const isOwnerPath = useLocation().pathname.includes("owner");
+  const { showHotelReg } = useAppContext();
 
   return (
     <div>
+      <Toaster />
       {!isOwnerPath && <Navbar></Navbar>}
-      {false && <HotelReg />}
+      {showHotelReg && <HotelReg />}
       <div className="min-h-[70vh]">
         <Routes>
           <Route path="/" element={<Home />}></Route>
@@ -33,7 +38,7 @@ function App() {
           </Route>
         </Routes>
       </div>
-      {!isOwnerPath &&<Footer></Footer>}
+      {!isOwnerPath && <Footer></Footer>}
     </div>
   );
 }
