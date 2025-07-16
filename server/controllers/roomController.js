@@ -1,10 +1,15 @@
 import Room from '../models/Room.js'
 import Hotel from '../models/Hotel.js'
+import cloudinary from 'cloudinary'
+
 
 export const createRoom = async (req, res) => {
   try {
     const { roomType, pricePerNight, amenities } = req.body
     const hotel = await Hotel.findOne({ owner: req.auth.userId })
+
+    console.log("Hotel controller");
+    
 
     if (!hotel) {
       return res.json({
@@ -18,6 +23,7 @@ export const createRoom = async (req, res) => {
       const response = await cloudinary.uploader.upload(file.path)
       return response.secure_url
     })
+    
     // Check if any images were uploaded.wait for mages to complete.
     const images = await Promise.all(uploadImages)
 

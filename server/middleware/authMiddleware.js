@@ -12,13 +12,7 @@ export const protect = async (req, res, next) => {
   if (!user) {
     return res.json({ success: false, message: 'User not found' })
   }
-
-  console.log("This is user " + user);
-   
+  // console.log("This is user " + user);
   req.user = user // Attach user to request object
-
-  console.log("This is the protect fucntion \n\n");
-  
-
   next() // Proceed to the next middleware or route handler
 }

@@ -1,9 +1,12 @@
-
 import React, { useState } from "react";
 import { assets } from "../../assets/assets";
 import Title from "../../components/Title";
+import axios from "axios";
+import { useAppContext } from "../../context/AppContext";
 
 function AddRoom() {
+  const { getToken, toast } = useAppContext();
+
   const [images, setImages] = useState({
     image1: null,
     image2: null,
@@ -12,7 +15,7 @@ function AddRoom() {
   });
 
   const [inputs, setInputs] = useState({
-    roomType: "", 
+    roomType: "",
     pricePerNight: "",
     amenities: {
       "Free Wifi": false,
@@ -23,9 +26,74 @@ function AddRoom() {
     },
   });
 
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (
+      !inputs.roomType ||
+      !inputs.pricePerNight ||
+      !inputs.amenities ||
+      !Object.values(images).some((image) => image)
+    ) {
+      toast.error("Please fill all the details....");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("roomType", inputs.roomType);
+      formData.append("pricePerNight", inputs.pricePerNight);
+
+      const amenities = Object.keys(inputs.amenities).filter(
+        (key) => inputs.amenities[key]
+      );
+      formData.append("amenities", JSON.stringify(amenities));
+
+      Object.keys(images).forEach((key) => {
+        images[key] && formData.append("images", images[key]);
+      });
+      
+      const response = await axios.post("/api/rooms/", formData, {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      const data = response.data
+      console.log(data);
+      
+      if (data.success) {
+        toast.success(data.message);
+        setInputs({
+          roomType: "",
+          pricePerNight: "",
+          amenities: {
+            "Free Wifi": false,
+            "Free Breakfast": false,
+            "Room Service": false,
+            "Mountain View": false,
+            "Pool Access": false,
+          },
+        });
+        setImages({ image1: null, image2: null, image3: null, image4: null });
+      } else {
+        toast.error(data.message);
+      }
+
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="px-4 sm:px-10 pb-10">
-      <form className="bg-white p-6 rounded-xl shadow-md">
+      <form
+        className="bg-white p-6 rounded-xl shadow-md"
+        onSubmit={handleSubmit}
+      >
         <Title
           title="Add Room"
           font="outfit"
@@ -37,7 +105,11 @@ function AddRoom() {
         <p className="text-gray-800 font-medium mt-10">Images</p>
         <div className="grid grid-cols-2 sm:flex gap-4 my-4 flex-wrap">
           {Object.keys(images).map((key) => (
-            <label htmlFor={`roomImages${key}`} key={key} className="cursor-pointer">
+            <label
+              htmlFor={`roomImages${key}`}
+              key={key}
+              className="cursor-pointer"
+            >
               <img
                 className="max-h-32 w-32 object-cover rounded-md border-2 border-dashed border-gray-300 hover:border-blue-500 transition-all"
                 src={
@@ -80,7 +152,9 @@ function AddRoom() {
           </div>
 
           <div className="max-w-xs">
-            <p className="text-gray-800 font-medium">Price <span className="text-sm text-gray-500">/night</span></p>
+            <p className="text-gray-800 font-medium">
+              Price <span className="text-sm text-gray-500">/night</span>
+            </p>
             <input
               type="number"
               placeholder="0"
@@ -121,8 +195,9 @@ function AddRoom() {
         <button
           type="submit"
           className="bg-blue-800 hover:bg-blue-700 text-white px-8 py-2 rounded-lg my-8 shadow-md transition-all"
+          disabled={loading}
         >
-          Add Room
+          {loading ? "Adding..." : "Add Room"}
         </button>
       </form>
     </div>

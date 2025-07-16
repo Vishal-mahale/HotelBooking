@@ -1,9 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Title from "../../components/Title";
-import { roomsDummyData, userDummyData } from "../../assets/assets";
+import axios from "axios";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 function ListRoom() {
-  const [rooms, setRooms] = useState(roomsDummyData);
+  const [rooms, setRooms] = useState([]);
+  const { user, getToken } = useAppContext();
+
+  const fetchRooms = async () => {
+    try {
+      const { data } = await axios.get("/api/rooms/", {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+      console.log(data);
+      
+      if (data.success) {
+        setRooms(data.rooms);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchRooms();
+    }
+  }, [user]);
+
   return (
     <div className="">
       <Title

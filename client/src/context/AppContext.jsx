@@ -18,14 +18,16 @@ export const ContextProvider = ({ children }) => {
   const [recentSearchCities, setRecentSearchCities] = useState([]);
 
   const fetchUser = async () => {
-
     try {
-      const data = await axios.get("/api/user", {
+      const response = await axios.get("/api/user", {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
-      if (data) {
-        setIsOwner(data.isOwner);
-        setRecentSearchCities(data.recentSearchCities);
+
+      const { role, recentSearchCities, success } = response.data;
+
+      if (success) {
+        setIsOwner(role === "hotelOwner"); // or whatever logic you prefer
+        setRecentSearchCities(recentSearchCities);
       } else {
         //If  the user is not fetched we are going to fetch it for next 5 seconds.
         setTimeout(() => {
@@ -45,6 +47,8 @@ export const ContextProvider = ({ children }) => {
 
   const value = {
     user,
+    toast,
+    axios,
     isOwner,
     navigate,
     getToken,
@@ -60,9 +64,9 @@ export const ContextProvider = ({ children }) => {
 };
 
 export const useAppContext = () => {
-    const context = useContext(AppContext);
-    if (!context) {
-      throw new Error("useAppContext must be used within a ContextProvider");
-    }
-    return context;
-  };
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useAppContext must be used within a ContextProvider");
+  }
+  return context;
+};

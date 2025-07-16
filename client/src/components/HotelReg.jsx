@@ -1,10 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { assets, cities } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
+import axios from "axios";
 
 function HotelReg() {
+  const { setShowHotelReg, getToken, setIsOwner, toast } = useAppContext();
+
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [contact, setContact] = useState("");
+
+  const submitHandler = async (event) => {
+    try {
+      event.preventDefault();
+      
+      const { data } = await axios.post(
+        '/api/hotels/register',
+        { name, address, contact, city },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        setIsOwner(true);
+        setShowHotelReg(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      // toast.error(data.message);
+      toast.error(error.message);      
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/70">
-      <form className="flex bg-white rounded-xl max-w-4xl max-md:mx-2">
+      <form
+        className="flex bg-white rounded-xl max-w-4xl max-md:mx-2"
+        onSubmit={submitHandler}
+        onClick={(e) => e.stopPropagation()}
+      >
         <img
           src={assets.regImage}
           alt="reg-image"
@@ -15,6 +51,7 @@ function HotelReg() {
             src={assets.closeIcon}
             alt="close-icon"
             className="absolute top-4 right-4 w-4 h-4 cursor-pointer"
+            onClick={() => setShowHotelReg(false)}
           />
           <p className="text-2xl text-semibold mt-6">Register your Hotel</p>
           {/* hotel name */}
@@ -25,6 +62,8 @@ function HotelReg() {
             <input
               type="text"
               id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="border border-gray-200 rounded w-full px-3 py-2.5 mt-1 outline-indigo-500 font-light"
               placeholder="Type here..."
               required
@@ -41,6 +80,8 @@ function HotelReg() {
               className="border border-gray-200 rounded w-full px-3 py-2.5 mt-1 outline-indigo-500 font-light"
               placeholder="Type here..."
               required
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
             />
           </div>
           {/* address */}
@@ -54,6 +95,8 @@ function HotelReg() {
               className="border border-gray-200 rounded w-full px-3 py-2.5 mt-1 outline-indigo-500 font-light"
               placeholder="Type here..."
               required
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
           </div>
           {/* Select cities from dropdown */}
@@ -66,6 +109,8 @@ function HotelReg() {
               id="cities"
               className="border border-gray-200 rounded w-full px-3 py-2.5 mt-1 outline-indigo-500 font-light"
               required
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
             >
               <option value="">Select City</option>
               {cities.map((city) => (

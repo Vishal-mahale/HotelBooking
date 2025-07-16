@@ -33,6 +33,7 @@ export const registerHotel = async (req, res) => {
       success: true,
       message: 'Hotel registered successfully'
     })
+
   } catch (error) {
     res.json({
       success: false,
