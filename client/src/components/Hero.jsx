@@ -1,7 +1,36 @@
 import React from "react";
 import { assets, cities } from "../assets/assets";
+import { useState } from "react";
+import { useAppContext } from "../context/AppContext";
+import axios from "axios";
 
 function Hero() {
+
+  const { navigate, getToken, setRecentSearchCities } = useAppContext();
+  const [destination, setDestination] = useState("");
+
+  const onSearch = async (e) => {   
+    console.log(destination);
+    e.preventDefault();
+    navigate(`/rooms?destination=${destination}`);
+    // call api to save recent save cities
+    await axios.get(
+      "api/user/store-recent-search",
+      { recentSearchedCity: destination },
+      {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      }
+    );
+
+    setRecentSearchCities((prevSearchedcities) => {
+      const updateSearchedCities = [...prevSearchedcities, destination];
+      if (updateSearchedCities.length > 3) {
+        updateSearchedCities.shift();
+      }
+      return updateSearchedCities;
+    });
+  };
+
   return (
     <div
       className='flex flex-col items-start justify-center px-6 md:px-16
@@ -19,7 +48,10 @@ function Hero() {
       </p>
 
       {/* Hotel booking form */}
-      <form className="bg-white text-gray-500 rounded-lg px-6 py-4 mt-8 flex flex-col md:flex-row max-md:items-start gap-4 max-md:mx-auto">
+      <form
+        className="bg-white text-gray-500 rounded-lg px-6 py-4 mt-8 flex flex-col md:flex-row max-md:items-start gap-4 max-md:mx-auto"
+        onSubmit={onSearch}
+      >
         <div>
           <div className="flex items-center gap-2">
             <img
@@ -36,10 +68,11 @@ function Hero() {
             className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none"
             placeholder="Type here"
             required
+            onChange={(e) => setDestination(e.target.value)}
           />
           <datalist id="destinations">
             {cities.map((city, index) => (
-              <option value={cities} key={index} />
+              <option value={city} key={index} />
             ))}
           </datalist>
         </div>
@@ -57,7 +90,7 @@ function Hero() {
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <img src={assets.calenderIcon} alt="calenderIcon"  className="h-4"/>
+            <img src={assets.calenderIcon} alt="calenderIcon" className="h-4" />
             <label htmlFor="checkOut">Check out</label>
           </div>
           <input
@@ -80,8 +113,7 @@ function Hero() {
         </div>
 
         <button className="flex items-center justify-center gap-1 rounded-md bg-black py-3 px-4 text-white my-auto cursor-pointer max-md:w-full max-md:py-1">
-        <img src={assets.searchIcon} alt="searchIcon" className="h-7"/>
-
+          <img src={assets.searchIcon} alt="searchIcon" className="h-7" />
           <span>Search</span>
         </button>
       </form>

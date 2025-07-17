@@ -1,10 +1,44 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect, use} from "react";
 import Title from "../../components/Title";
 import { assets, dashboardDummyData } from "../../assets/assets";
+import { useAppContext } from "../../context/AppContext";
+import axios from "axios";
 
 function Dashboard() {
   
-  const [dashboardData, setdashboardData] = useState(dashboardDummyData);
+  const { currency, getToken, user, toast } = useAppContext();
+
+  const [dashboardData, setDashboardData] = useState({
+    bookings: [],
+    totalBookings: 0,
+    totalRevenue: 0,
+  });
+
+  const fetchDashboardData = async () => {
+    try {
+      const { data } = await axios.get("/api/bookings/hotel", {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      // console.log(data);
+    
+      if (data.success) {
+        setDashboardData(data);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchDashboardData();
+    }
+  }, [user]);
+
+
 
   return (
     <div className="">
@@ -70,7 +104,7 @@ function Dashboard() {
             </tr>
           </thead>
           <tbody className="text-sm">
-            {dashboardData.bookings.map((item, index) => (
+            {dashboardData.bookings?.map((item, index) => (
               <tr key={index}>
                 <td className="py-3 px-4 text-gray-700 border-t border-gray-300 text-center">
                   {item.user.username}
@@ -79,7 +113,7 @@ function Dashboard() {
                   {item.room.roomType}
                 </td>
                 <td className="py-3 px-4 text-gray-700 border-t border-gray-300 text-center">
-                  {item.totalPrice}
+                  {currency}{item.totalPrice}
                 </td>
                 <td className="py-3 px-4 text-gray-700 border-t border-gray-300 flex text-center">
                   <button

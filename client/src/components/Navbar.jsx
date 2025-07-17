@@ -51,9 +51,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [location.pathname]);
 
-  console.log(isOwner);
-  
-
 
   return (
     <nav
