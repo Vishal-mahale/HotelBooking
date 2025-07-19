@@ -15,7 +15,7 @@ const bookingSchema = new mongoose.Schema(
     room: {
       type: String,
       required: true,
-      ref: 'Room',
+      ref: 'Room'
     },
     checkInDate: {
       type: Date,
@@ -23,6 +23,10 @@ const bookingSchema = new mongoose.Schema(
     },
     checkOutDate: {
       type: Date,
+      required: true
+    },
+    guests: {
+      type: Number,
       required: true
     },
     totalPrice: {
@@ -36,13 +40,13 @@ const bookingSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      default : "pay at hotel",
+      default: 'pay at hotel',
       required: true
     },
     isPaid: {
       type: Boolean,
       default: false
-    }, 
+    }
   },
   { timestamps: true }
 )

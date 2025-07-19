@@ -10,7 +10,7 @@ const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
       checkInDate: { $lte: checkOutDate },
       checkOutDate: { $gte: checkInDate }
     })
-
+  
     const isAvailable = booking.length === 0
     return isAvailable
   } catch (error) {
@@ -38,6 +38,7 @@ export const checkAvailabilityApi = async (req, res) => {
 
 export const createBooking = async (req, res) => {
   try {
+    
     const { room, checkInDate, checkOutDate, guests } = req.body
     const user = req.user._id // Assuming user ID is available in req.user
 
@@ -47,33 +48,33 @@ export const createBooking = async (req, res) => {
       checkOutDate,
       room
     })
-
+    
     if (!isAvailable) {
       return res.json({
         success: false,
-        message: 'Room is not available for the selected dates'
+        message: 'Room is not available for the selected dates.'
       })
     }
 
     const roomData = await Room.findById(room).populate('hotel')
-    const totalPrice = roomData.pricePerNight
-
+    const pricePerNight = roomData.pricePerNight    
+        
     const checkIn = new Date(checkInDate)
     const checkOut = new Date(checkOutDate)
     const timeDifference = checkOut.getTime() - checkIn.getTime()
     const days = Math.ceil(timeDifference / (1000 * 3600 * 24))
-    totalPrice *= days
-
+    const totalPrice = pricePerNight * days;
+    
     const booking = await Booking.create({
       user,
-      room,
       hotel: roomData.hotel._id,
-      guests: +guests,
+      room,
       checkInDate,
       checkOutDate,
+      guests: +guests,
       totalPrice
     })
-
+     
     res.json({
       success: true,
       message: 'Booking created successfully',
@@ -90,11 +91,12 @@ export const createBooking = async (req, res) => {
 // Api to get the all the bbooking for the user
 export const getUserBookings = async (req, res) => {
   try {
+    
     const userId = req.user._id // Assuming user ID is available in req.user
     const bookings = await Booking.find({ user: userId })
       .populate('room')
       .populate('hotel')
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1 })      
 
     res.json({
       success: true,

@@ -30,8 +30,6 @@ app.use('/api/hotels', hotelRouter)
 app.use('/api/rooms', roomRouter) // Serve static files from the uploads directory
 app.use('/api/bookings', bookingRouter) 
 
-
-
 const port = process.env.PORT || 3000
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)

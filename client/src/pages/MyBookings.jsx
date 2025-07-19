@@ -1,10 +1,39 @@
 import React from "react";
 import Title from "../components/Title";
 import { assets, userBookingsDummyData } from "../assets/assets";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { useAppContext } from "../context/AppContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Mybookings() {
-  const [bookings, setBookings] = useState(userBookingsDummyData);
+  const { user, getToken } = useAppContext();
+  const [bookings, setBookings] = useState();
+
+  const fetchBookings = async () => {
+    try {
+            
+      const { data } = await axios.get("/api/bookings/user", {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+      
+      console.log(data);
+      
+
+      if (data.success) {
+        setBookings(data.bookings);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+  
   return (
     <div className="py-28 md:pb-35 md:pt-32 px-4 md:px-16 lg:px-24 xl:px-32">
       <Title
@@ -23,7 +52,7 @@ function Mybookings() {
           <div className="w-1/3">Payments</div>
         </div>
 
-        {bookings.map((booking) => (
+        {bookings?.map((booking) => (
           <div
             key={booking._id}
             className="grid gris-cols-1 md:grid-cols-[3fr_2fr_1fr] w-full border-b 
@@ -88,9 +117,11 @@ function Mybookings() {
                   {booking.isPaid ? "Paid" : "Unpaid"}
                 </p>
               </div>
-             {!booking.isPaid && (
-                <button className="px-4 mt-4 py-1.5 text-xs border border-gray-400 rounded-full hover:bg-gray-50 transition-all cursor-pointer">Pay Now</button>
-             )}
+              {!booking.isPaid && (
+                <button className="px-4 mt-4 py-1.5 text-xs border border-gray-400 rounded-full hover:bg-gray-50 transition-all cursor-pointer">
+                  Pay Now
+                </button>
+              )}
             </div>
           </div>
         ))}

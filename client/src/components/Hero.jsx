@@ -10,18 +10,19 @@ function Hero() {
   const [destination, setDestination] = useState("");
 
   const onSearch = async (e) => {   
-    console.log(destination);
     e.preventDefault();
     navigate(`/rooms?destination=${destination}`);
+
     // call api to save recent save cities
-    await axios.get(
+    await axios.post(
       "api/user/store-recent-search",
-      { recentSearchedCity: destination },
+      { recentSearchCity: destination },
       {
         headers: { Authorization: `Bearer ${await getToken()}` },
       }
     );
 
+    
     setRecentSearchCities((prevSearchedcities) => {
       const updateSearchedCities = [...prevSearchedcities, destination];
       if (updateSearchedCities.length > 3) {

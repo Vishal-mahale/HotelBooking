@@ -1,8 +1,8 @@
 export const getUserData = async (req, res) => {
   try {
-    
+        
     const role = req.user.role
-    const recentSearchCities = req.user.recentSearchCities
+    const recentSearchCities = req.user.recentSearchCities  
     res.json({ success: true, role, recentSearchCities })
 
   } catch (error) {
@@ -16,11 +16,10 @@ export const getUserData = async (req, res) => {
 // stored users recent search cities
 export const storedRecentSerachCities = async (req, res) => {
   try {
-    
-    console.log("User Controller");
-    
+      
     const { recentSearchCity } = req.body
-    const user = await req.user
+      
+    const user = await req.user      
 
     if (user.recentSearchCities.length < 3) {
       user.recentSearchCities.push(recentSearchCity)
@@ -28,7 +27,7 @@ export const storedRecentSerachCities = async (req, res) => {
       user.recentSearchCities.shift()
       user.recentSearchCities.push(recentSearchCity)
     }
-
+      
     await user.save()
     res.json({ success: true, message: 'city added' })
 

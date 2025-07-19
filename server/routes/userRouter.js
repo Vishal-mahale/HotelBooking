@@ -9,6 +9,6 @@ const userRouter = express.Router()
 
 // Route to get user data
 userRouter.get('/', protect, getUserData)
-userRouter.get('/store-recent-search', protect, storedRecentSerachCities)
+userRouter.post('/store-recent-search', protect, storedRecentSerachCities)
 
 export default userRouter

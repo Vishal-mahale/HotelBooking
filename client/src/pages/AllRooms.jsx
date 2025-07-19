@@ -3,6 +3,7 @@ import { assets, facilityIcons, roomsDummyData } from "../assets/assets";
 import StarRating from "../components/StarRating";
 import { useState, useMemo } from "react";
 import { useAppContext } from "../context/AppContext";
+import { useSearchParams } from "react-router-dom";
 
 // This is a small Component
 const CheckBox = ({ label, selected = false, onChange = () => {} }) => {
@@ -35,7 +36,7 @@ const RadioButton = ({ label, selected = false, onChange = () => {} }) => {
 function AllRooms() {
   const [openFilters, setopenFilter] = useState(false);
   const { navigate, currency, rooms } = useAppContext();
-  const [searchParams, setSearchParams] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedFilters, setSelectedFilters] = useState({
     roomType: [],
     priceRange: [],
@@ -76,7 +77,6 @@ function AllRooms() {
     );
   };
 
- 
   const matchesPriceRange = (room) => {
     return (
       selectedFilters.priceRange.length === 0 ||
@@ -105,7 +105,8 @@ function AllRooms() {
   const filterDestinations = (room) => {
     const destination = searchParams?.get("destination");
     if (!destination) return true;
-    return room.hotel.city.toLowerCase().includes(destination.toLowerCase());
+    return room.hotel.city[0].toLowerCase().includes(destination.toLowerCase());  // check.
+  
   };
 
   // fliter and sort the rooms based on the slected search sort and filter SchemaTypeOptions
@@ -129,7 +130,6 @@ function AllRooms() {
     setSearchParams({});
   };
 
-  // console.log(rooms);
 
   return (
     <div className="flex flex-col-reverse lg:flex-row items-start justify-between pt-28 md:pt-34 px-4 md:px-16 lg:px-24 xl:px-32">
@@ -216,7 +216,9 @@ function AllRooms() {
             >
               {openFilters ? "HIDE" : "SHOW"}
             </span>
-            <span className="hidden lg:block" onClick={clearFilters}>CLEAR</span>
+            <span className="hidden lg:block" onClick={clearFilters}>
+              CLEAR
+            </span>
           </div>
         </div>
         {/* filters options */}
