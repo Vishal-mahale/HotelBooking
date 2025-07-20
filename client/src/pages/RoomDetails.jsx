@@ -222,7 +222,6 @@ function RoomDetails() {
             className="bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all text-white rounded-md max-md:w-full max-md:mt-6 md:px-25 py-3 md:py-4 text-base cursor-pointer max-lg:mt-6 max-xl:mt-6"
           >
             {isAavailable ? "Bool Now" : "Check Availability"}
-            {isAavailable ? "Bool Now" : "Check Availability"}
           </button>
         </form>
 
