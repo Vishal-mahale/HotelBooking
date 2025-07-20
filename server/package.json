@@ -21,7 +21,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.2",
     "multer": "^2.0.1",
+<<<<<<< HEAD
     "nodemailer": "^7.0.5",
+=======
+>>>>>>> 31bbe6a6b62bce292864ffa3fa814c0166c8fe0e
     "svix": "^1.69.0"
   },
   "devDependencies": {

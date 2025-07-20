@@ -11,7 +11,6 @@ const clerkWebHooks = async (req, res) => {
       'svix-timestamp': req.headers['svix-timestamp'],
       'svix-signature': req.headers['svix-signature']
     }
-
     // Verify the webhook headers
     await webhook.verify(JSON.stringify(req.body), headers)
 
@@ -32,12 +31,6 @@ const clerkWebHooks = async (req, res) => {
         break
       }
       case 'user.updated': {
-        const userData = {
-          _id: data.id,
-          email: data.email_addresses[0].email_address,
-          username: data.first_name + ' ' + data.last_name,
-          image: data.image_url
-        }
         await User.findByIdAndUpdate(data.id, userData)
         break
       }

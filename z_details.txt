@@ -75,11 +75,3 @@ populate() mongodb
 
 react-hot-toast
 axios
-
-nodemailer
-brevo
-cleark
-cloudinary
-mongoose
-express
-multer

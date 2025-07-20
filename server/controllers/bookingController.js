@@ -11,7 +11,6 @@ const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
       checkInDate: { $lte: checkOutDate },
       checkOutDate: { $gte: checkInDate }
     })
-
     const isAvailable = booking.length === 0
     return isAvailable
   } catch (error) {
@@ -48,7 +47,6 @@ export const createBooking = async (req, res) => {
       checkOutDate,
       room
     })
-
     if (!isAvailable) {
       return res.json({
         success: false,
@@ -74,7 +72,6 @@ export const createBooking = async (req, res) => {
       guests: +guests,
       totalPrice
     })
-
     res.json({
       success: true,
       message: 'Booking created successfully',
@@ -123,7 +120,6 @@ export const getHotelBookings = async (req, res) => {
       .populate('room hotel user')
       .sort({ createdAt: -1 })
     const totalBookings = bookings.length
-
     const totalRevenue = bookings.reduce(
       (acc, booking) => acc + booking.totalPrice,
       0
