@@ -13,7 +13,6 @@ import Dashboard from "./pages/hotelOwner/Dashboard";
 import ListRoom from "./pages/hotelOwner/ListRoom";
 import AddRoom from "./pages/hotelOwner/AddRoom";
 import { Toaster } from "react-hot-toast";
-import { useContext } from "react";
 import { useAppContext } from "./context/AppContext";
 
 function App() {

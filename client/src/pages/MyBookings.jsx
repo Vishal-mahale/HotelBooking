@@ -17,9 +17,7 @@ function Mybookings() {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
       
-      console.log(data);
       
-
       if (data.success) {
         setBookings(data.bookings);
       } else {
