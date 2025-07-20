@@ -6,7 +6,9 @@ import Footer from "./components/Footer";
 import { useLocation, Routes, Route } from "react-router-dom";
 import AllRooms from "./pages/AllRooms";
 import RoomDetails from "./pages/RoomDetails";
-import Mybookings from "./pages/Mybookings";
+// import Mybookings from "./pages/Mybookings";
+import Mybookings from "./pages/MyBookings"; // ✅ matches exact file name
+
 import HotelReg from "./components/HotelReg";
 import Layout from "./pages/hotelOwner/Layout";
 import Dashboard from "./pages/hotelOwner/Dashboard";
