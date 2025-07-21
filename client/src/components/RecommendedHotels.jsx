@@ -3,7 +3,6 @@ import { roomsDummyData } from "../assets/assets";
 import HotelCard from "./HotelCard";
 import Title from "./Title";
 import { useAppContext } from "../context/AppContext";
-import { use } from "react";
 
 function RecommendedHotels() {
 
