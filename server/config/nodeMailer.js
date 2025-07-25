@@ -1,6 +1,5 @@
 // import nodemailer from 'nodemailer'
 
-// Create a test account or replace with real credentials.
 // const transporter = nodemailer.createTransport({
 //   host: 'smtp-relay.brevo.com',
 //   port: 587,
@@ -27,3 +26,31 @@
 // console.log('Test email result:', testEmailResult)
 
 // export default transporter
+
+
+
+// utils/sendEmail.js
+import nodemailer from 'nodemailer'
+
+export const sendEmail = async ({ to, subject, html }) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail', // or use SMTP config
+    auth: {
+      user: process.env.EMAIL_USER, // your Gmail or SMTP username
+      pass: process.env.EMAIL_PASS  // your Gmail or SMTP password or App password
+    }
+  })
+
+  console.log(EMAIL_PASS,EMAIL_PASS);
+  console.log("This is a nodemailer fucntion");
+  
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject,
+    html
+  }
+
+  await transporter.sendMail(mailOptions)
+}

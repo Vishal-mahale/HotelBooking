@@ -1,7 +1,7 @@
 import React from "react";
 import Title from "../components/Title";
 import { assets, userBookingsDummyData } from "../assets/assets";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,12 +12,10 @@ function Mybookings() {
 
   const fetchBookings = async () => {
     try {
-            
       const { data } = await axios.get("/api/bookings/user", {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
-      
-      
+
       if (data.success) {
         setBookings(data.bookings);
       } else {
@@ -31,7 +29,7 @@ function Mybookings() {
   useEffect(() => {
     fetchBookings();
   }, []);
-  
+
   return (
     <div className="py-28 md:pb-35 md:pt-32 px-4 md:px-16 lg:px-24 xl:px-32">
       <Title
