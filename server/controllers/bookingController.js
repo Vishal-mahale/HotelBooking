@@ -165,24 +165,24 @@ export const createBooking = async (req, res) => {
       })
     }
 
-    // const roomData = await Room.findById(room).populate('hotel')
-    // const pricePerNight = roomData.pricePerNight
+    const roomData = await Room.findById(room).populate('hotel')
+    const pricePerNight = roomData.pricePerNight
 
-    // const checkIn = new Date(checkInDate)
-    // const checkOut = new Date(checkOutDate)
-    // const timeDifference = checkOut.getTime() - checkIn.getTime()
-    // const days = Math.ceil(timeDifference / (1000 * 3600 * 24))
-    // const totalPrice = pricePerNight * days
+    const checkIn = new Date(checkInDate)
+    const checkOut = new Date(checkOutDate)
+    const timeDifference = checkOut.getTime() - checkIn.getTime()
+    const days = Math.ceil(timeDifference / (1000 * 3600 * 24))
+    const totalPrice = pricePerNight * days
 
-    // const booking = await Booking.create({
-    //   user: userId,
-    //   hotel: roomData.hotel._id,
-    //   room,
-    //   checkInDate,
-    //   checkOutDate,
-    //   guests: +guests,
-    //   totalPrice
-    // })
+    const booking = await Booking.create({
+      user: userId,
+      hotel: roomData.hotel._id,
+      room,
+      checkInDate,
+      checkOutDate,
+      guests: +guests,
+      totalPrice
+    })
 
     // Fetch user's email
     const user = await User.findById(userId)
@@ -217,11 +217,11 @@ export const createBooking = async (req, res) => {
 
     console.log('aFter sebd mail....')
 
-    // res.json({
-    //   success: true,
-    //   message: 'Booking created successfully.......',
-    //   booking
-    // })
+    res.json({
+      success: true,
+      message: 'Booking created successfully.......',
+      booking
+    })
   } catch (error) {
     console.error(error)
     res.json({
