@@ -2,14 +2,12 @@ import Room from '../models/Room.js'
 import Hotel from '../models/Hotel.js'
 import cloudinary from 'cloudinary'
 
-
 export const createRoom = async (req, res) => {
   try {
     const { roomType, pricePerNight, amenities } = req.body
     const hotel = await Hotel.findOne({ owner: req.auth.userId })
 
-    console.log("Hotel controller");
-    
+    console.log('Hotel controller')
 
     if (!hotel) {
       return res.json({
@@ -23,7 +21,7 @@ export const createRoom = async (req, res) => {
       const response = await cloudinary.uploader.upload(file.path)
       return response.secure_url
     })
-    
+
     // Check if any images were uploaded.wait for mages to complete.
     const images = await Promise.all(uploadImages)
 
@@ -50,6 +48,8 @@ export const createRoom = async (req, res) => {
 // Controller to get all the rooms
 export const getRoom = async (req, res) => {
   try {
+    console.log('Getting all the rooms')
+
     const rooms = await Room.find({ isAvailable: true })
       .populate({
         path: 'hotel',
@@ -84,7 +84,7 @@ export const getOwnersRooms = async (req, res) => {
       rooms
     })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.json({
       success: false,
       message: error.message
@@ -92,12 +92,8 @@ export const getOwnersRooms = async (req, res) => {
   }
 }
 
-
-
-
 export const toggleRoomAvailability = async (req, res) => {
   try {
-    
     const { roomId } = req.body
     const room = await Room.findById(roomId)
     if (!room) {

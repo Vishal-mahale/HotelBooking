@@ -88,8 +88,6 @@ export const checkAvailabilityApi = async (req, res) => {
 //   }
 // }
 
-
-
 // Api to get the all the bbooking for the user
 export const getUserBookings = async (req, res) => {
   try {
@@ -117,7 +115,7 @@ export const getHotelBookings = async (req, res) => {
     if (!hotel) {
       return res.json({
         success: false,
-        message: 'Hotel not found'
+        message: 'Hotel not found.'
       })
     }
 
@@ -142,12 +140,9 @@ export const getHotelBookings = async (req, res) => {
   }
 }
 
-
-
 export const createBooking = async (req, res) => {
   try {
-
-    console.log('Tis is create Booking.')
+    console.log('This is create Booking.')
 
     const { room, checkInDate, checkOutDate, guests } = req.body
     const userId = req.user._id
@@ -161,7 +156,7 @@ export const createBooking = async (req, res) => {
     if (!isAvailable) {
       return res.json({
         success: false,
-        message: 'Room is not available for the selected dates....'
+        message: 'Room is not available for the selected dates.'
       })
     }
 
@@ -189,37 +184,42 @@ export const createBooking = async (req, res) => {
 
     console.log(user)
 
-    // // Send booking confirmation email
-    // const emailHtml = `
-    //   <h2>Booking Confirmation</h2>
-    //   <p>Hello ${user.name},</p>
-    //   <p>Your hotel booking has been confirmed. Here are the details:</p>
-    //   <ul>
-    //     <li><strong>Hotel:</strong> ${roomData.hotel.name}</li>
-    //     <li><strong>Room:</strong> ${roomData.name}</li>
-    //     <li><strong>Check-in:</strong> ${new Date(
-    //       checkInDate
-    //     ).toDateString()}</li>
-    //     <li><strong>Check-out:</strong> ${new Date(
-    //       checkOutDate
-    //     ).toDateString()}</li>
-    //     <li><strong>Guests:</strong> ${guests}</li>
-    //     <li><strong>Total Price:</strong> ₹${totalPrice}</li>
-    //   </ul>
-    //   <p>Thank you for booking with us!</p>
-    // `
+    // Send booking confirmation email
+    const emailHtml = `
+      <h2>Booking Confirmation</h2>
+      <p>Hello ${user.name},</p>
+      <p>Your hotel booking has been confirmed. Here are the details:</p>
+      <ul>
+        <li><strong>Hotel:</strong> ${roomData.hotel.name}</li>
+        <li><strong>Room:</strong> ${roomData.name}</li>
+        <li><strong>Check-in:</strong> ${new Date(
+          checkInDate
+        ).toDateString()}</li>
+        <li><strong>Check-out:</strong> ${new Date(
+          checkOutDate
+        ).toDateString()}</li>
+        <li><strong>Guests:</strong> ${guests}</li>
+        <li><strong>Total Price:</strong> ₹${totalPrice}</li>
+      </ul>
+      <p>Thank you for booking with us!</p>
+    `
 
-    // await sendEmail({
-    //   to: user.email,
-    //   subject: 'Hotel Booking Confirmation',
-    //   html: emailHtml
-    // })
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: 'Hotel Booking Confirmation',
+        html: emailHtml
+      })
+      console.log('Email sent!')
+    } catch (error) {
+      console.error('Email sending failed:', error.message)
+    }
 
-    console.log('aFter sebd mail....')
+    console.log('aFter send mail.')
 
     res.json({
       success: true,
-      message: 'Booking created successfully.......',
+      message: 'Booking created successfully.',
       booking
     })
   } catch (error) {

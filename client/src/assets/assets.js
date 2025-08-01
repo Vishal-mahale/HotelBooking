@@ -73,7 +73,7 @@ export const assets = {
   totalRevenueIcon
 }
 
-export const cities = ['Dubai', 'Singapore', 'New York', 'London']
+export const cities = ['Dubai', 'Singapore', 'New York', 'London','Pune','Mumbai', 'Bangalore', 'Delhi', 'Kolkata', 'Chennai', 'Hyderabad', 'Jaipur', 'Ahmedabad', 'Surat', 'Lucknow', 'Kanpur', 'Nagpur', 'Indore', 'Thane', 'Bhopal']
 
 // Exclusive Offers Dummy Data
 export const exclusiveOffers = [

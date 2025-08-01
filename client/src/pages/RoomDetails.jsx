@@ -39,10 +39,10 @@ function RoomDetails() {
       if (data.success) {
         if (data.isAvailable) {
           setIsAavailable(true);
-          toast.success("Room is available");
+          toast.success("Room is available.");
         } else {
           setIsAavailable(false);
-          toast.error("Room is not available");
+          toast.error("Room is not available.");
         }
       } else {
         toast.error(error.message);

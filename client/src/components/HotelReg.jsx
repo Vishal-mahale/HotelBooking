@@ -4,6 +4,7 @@ import { useAppContext } from "../context/AppContext";
 import axios from "axios";
 
 function HotelReg() {
+
   const { setShowHotelReg, getToken, setIsOwner, toast } = useAppContext();
 
   const [name, setName] = useState("");
@@ -20,6 +21,8 @@ function HotelReg() {
         { name, address, contact, city },
         { headers: { Authorization: `Bearer ${await getToken()}` } }
       );
+      
+      
 
       if (data.success) {
         toast.success(data.message);
