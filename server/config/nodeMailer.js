@@ -9,8 +9,6 @@
 //   }
 // })
 
-
-
 // transporter
 //   .verify()
 //   .then(() => console.log('SMTP connection OK'))
@@ -27,8 +25,6 @@
 
 // export default transporter
 
-
-
 // utils/sendEmail.js
 
 import nodemailer from 'nodemailer'
@@ -38,13 +34,10 @@ export const sendEmail = async ({ to, subject, html }) => {
     service: 'gmail', // or use SMTP config
     auth: {
       user: process.env.EMAIL_USER, // your Gmail or SMTP username
-      pass: process.env.EMAIL_PASS  // your Gmail or SMTP password or App password
+      pass: process.env.EMAIL_PASS // your Gmail or SMTP password or App password
     }
   })
 
-  console.log(EMAIL_PASS,EMAIL_PASS);
-  console.log("This is a nodemailer fucntion");
-  
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -53,5 +46,10 @@ export const sendEmail = async ({ to, subject, html }) => {
     html
   }
 
-  await transporter.sendMail(mailOptions)
+  try {
+    await transporter.sendMail(mailOptions)
+  } catch (error) {
+    console.log('transporter error')
+    console.log(error)
+  }
 }

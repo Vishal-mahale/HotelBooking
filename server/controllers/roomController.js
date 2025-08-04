@@ -6,9 +6,7 @@ export const createRoom = async (req, res) => {
   try {
     const { roomType, pricePerNight, amenities } = req.body
     const hotel = await Hotel.findOne({ owner: req.auth.userId })
-
-    console.log('Hotel controller')
-
+    
     if (!hotel) {
       return res.json({
         success: false,
@@ -48,8 +46,6 @@ export const createRoom = async (req, res) => {
 // Controller to get all the rooms
 export const getRoom = async (req, res) => {
   try {
-    console.log('Getting all the rooms')
-
     const rooms = await Room.find({ isAvailable: true })
       .populate({
         path: 'hotel',
@@ -84,7 +80,6 @@ export const getOwnersRooms = async (req, res) => {
       rooms
     })
   } catch (error) {
-    console.log(error)
     res.json({
       success: false,
       message: error.message

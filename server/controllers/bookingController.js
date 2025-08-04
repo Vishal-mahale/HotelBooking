@@ -5,6 +5,7 @@ import Hotel from '../models/Hotel.js'
 
 import { sendEmail } from '../config/nodeMailer.js'
 import User from '../models/User.js' // If you have a User model
+import stripe from 'stripe'
 
 // function to check avilability of a room
 const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
@@ -142,8 +143,6 @@ export const getHotelBookings = async (req, res) => {
 
 export const createBooking = async (req, res) => {
   try {
-    console.log('This is create Booking.')
-
     const { room, checkInDate, checkOutDate, guests } = req.body
     const userId = req.user._id
 
@@ -182,16 +181,14 @@ export const createBooking = async (req, res) => {
     // Fetch user's email
     const user = await User.findById(userId)
 
-    console.log(user)
-
     // Send booking confirmation email
     const emailHtml = `
       <h2>Booking Confirmation</h2>
-      <p>Hello ${user.name},</p>
+      <p>Hello ${req.user.username},</p>
       <p>Your hotel booking has been confirmed. Here are the details:</p>
       <ul>
         <li><strong>Hotel:</strong> ${roomData.hotel.name}</li>
-        <li><strong>Room:</strong> ${roomData.name}</li>
+        <li><strong>Booking ID :- </strong> ${booking._id}</li>
         <li><strong>Check-in:</strong> ${new Date(
           checkInDate
         ).toDateString()}</li>
@@ -210,12 +207,9 @@ export const createBooking = async (req, res) => {
         subject: 'Hotel Booking Confirmation',
         html: emailHtml
       })
-      console.log('Email sent!')
     } catch (error) {
       console.error('Email sending failed:', error.message)
     }
-
-    console.log('aFter send mail.')
 
     res.json({
       success: true,
@@ -227,6 +221,58 @@ export const createBooking = async (req, res) => {
     res.json({
       success: false,
       message: error.message
+    })
+  }
+}
+
+
+// API for the stripe payment
+export const stripePayment = async (req, res) => {
+  try {
+
+    const { bookingId } = req.body
+    const booking = await Booking.findById(bookingId)
+    const room = await Room.findById(booking.room).populate('hotel')
+    const totalPrice = booking.totalPrice
+    const { origin } = req.headers
+
+    const stripeInstance = stripe(process.env.STRIPE_SECRET_KEY)
+
+    const line_items = [
+      {
+        price_data: {
+          currency: 'aud',
+          product_data: {
+            name: room.hotel.name
+          },
+          unit_amount: totalPrice * 100 // Convert to cents
+        },
+        quantity: 1
+      }
+    ]
+
+    // create a chekout session
+    const checkOutSession = await stripeInstance.checkout.sessions.create({
+      line_items,
+      mode: 'payment',
+      success_url: `${origin}/loader/my-bookings`,
+      cancel_url: `${origin}/my-bookings`,
+      metadata: {
+        bookingId: booking._id.toString()
+      }
+    })
+    
+    res.json({
+      success: true,
+      url: checkOutSession.url
+    })
+
+
+  } catch (error) {
+    console.error('Stripe payment error:', error.message)
+    res.json({
+      success: false,
+      message: "Payment failed. Please try again later."
     })
   }
 }
