@@ -14,9 +14,7 @@ export const createTestimonial = async (req, res) => {
       rating,
       review
     })
-
     await newTestimonial.save()
-
     res.status(201).json(newTestimonial)
   } catch (err) {
     res
