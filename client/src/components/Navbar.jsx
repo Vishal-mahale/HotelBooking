@@ -37,6 +37,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { openSignIn } = useClerk();
+  
   const location = useLocation();
   const { user, navigate, isOwner, showHotelReg, setShowHotelReg } =
     useAppContext();

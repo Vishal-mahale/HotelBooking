@@ -6,6 +6,7 @@ import StarRating from "../components/StarRating";
 import { useAppContext } from "../context/AppContext";
 
 const Testimonials = () => {
+
   const [formData, setFormData] = useState({ rating: 5, review: "" });
   const [testimonials, setTestimonials] = useState([]);
   const [page, setPage] = useState(1);
@@ -18,7 +19,7 @@ const Testimonials = () => {
     try {
       const res = await axios.get(`/api/testimonials?page=${page}`);
       setTestimonials(res.data.testimonials);
-      setTotalPages(res.data.totalPages);
+      setTotalPages(res.data.totalPages);      
     } catch (err) {
       console.error("Error fetching testimonials:", err);
     }
@@ -31,11 +32,12 @@ const Testimonials = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await axios.post(
+      const {data} = await axios.post(
         "/api/testimonials",
         { ...formData },
         { headers: { Authorization: `Bearer ${await getToken()}` } }
       );
+      
       if(data.success) {
         toast.success("Testimonial submitted successfully!");
       }
@@ -53,6 +55,7 @@ const Testimonials = () => {
   const toggleExpand = (id) => {
     setExpandedMap((prev) => ({ ...prev, [id]: !prev[id] }));
   };
+  console.log(testimonials);
 
   return (
     <div className="flex flex-col items-center px-4 md:px-16 bg-slate-50 pt-16 pb-24 mt-30">

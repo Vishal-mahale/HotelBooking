@@ -85,6 +85,7 @@ function Hero() {
           </div>
           <input
             id="checkIn"
+            min={new Date().toISOString().split("T")[0]}
             type="date"
             className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none"
           />
@@ -97,6 +98,7 @@ function Hero() {
           <input
             id="checkOut"
             type="date"
+            min={new Date().toISOString().split("T")[0]}
             className=" rounded border border-gray-200 px-3 py-1.5 mt-1.5 text-sm outline-none"
           />
         </div>

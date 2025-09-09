@@ -21,8 +21,11 @@ export const ContextProvider = ({ children }) => {
 
   const fetchRoom = async () => {
     try {
+
       const { data } = await axios.get("/api/rooms");
-            
+
+      console.log(data);
+      
       if (data.success) {
         setRooms(data.rooms);
       } else {
@@ -82,9 +85,7 @@ export const ContextProvider = ({ children }) => {
     recentSearchCities,
     setRecentSearchCities,
   };
-
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-
 };
 
 export const useAppContext = () => {

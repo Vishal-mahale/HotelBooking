@@ -12,7 +12,7 @@ function HotelCard({ room, index }) {
       >
         <img
           src={room.images[0]}
-          alt={room.hotel.name}
+          alt={room?.hotel?.name}
           className="w-full h-48 object-cover rounded-xl"
         />
 

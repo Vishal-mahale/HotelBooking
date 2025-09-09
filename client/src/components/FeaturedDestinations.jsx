@@ -5,6 +5,7 @@ import Title from "./Title";
 import { useAppContext } from "../context/AppContext";
 
 function FeaturedDestinations() {
+  
   const { rooms, navigate } = useAppContext();
   
   return (

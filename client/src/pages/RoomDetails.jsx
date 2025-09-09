@@ -89,6 +89,8 @@ function RoomDetails() {
     const room = rooms.find((room) => room._id === id);
     room && setRoom(room);
     room && setmainImage(room.images[0]);
+
+    console.log(room);
   }, [rooms]);
 
   return (
@@ -117,14 +119,16 @@ function RoomDetails() {
 
         {/* room images */}
         <div className="flex flex-col lg:flex-row gap-6 mt-6">
+          {/* Main Image */}
           <div className="lg:w-1/2 w-full">
             <img
               src={mainImage}
               alt="main-image"
-              className="w-full object-cover rounded-xl shadow-lg "
+              className="w-full h-80 md:h-96 lg:h-[450px] object-cover rounded-xl shadow-lg"
             />
           </div>
 
+          {/* Thumbnails */}
           <div className="grid grid-cols-2 gap-4 lg:w-1/2 w-full">
             {room?.images.length > 1 &&
               room.images.map((image, index) => (
@@ -133,7 +137,7 @@ function RoomDetails() {
                   alt="hotel-image"
                   key={index}
                   onClick={() => setmainImage(image)}
-                  className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${
+                  className={`w-full h-40 md:h-48 lg:h-56 object-cover rounded-xl shadow-md cursor-pointer ${
                     image === mainImage && "outline-3 outline-orange-500"
                   }`}
                 />
@@ -258,7 +262,7 @@ function RoomDetails() {
         <div className="flex flex-col flex-start gap-4">
           <div className="flex gap-4">
             <img
-              src={room.hotel.owner.image}
+              src={room?.hotel?.owner?.image}
               alt="Host"
               className="h-14 w-14 md:w-18 md:h-18 rounded-full"
             />
