@@ -20,14 +20,19 @@ connectCloudinary() // Connect to Cloudinary
 
 const app = express() //to enable cross origin resource sharing
 
+
 app.use(cors())
-app.use(express.json()) // to parse JSON bodies
 
 app.post(
   '/api/stripe',
   express.raw({ type: 'application/json' }),
   stripeWebHooks
-) // Handle Stripe webhooks
+) 
+// Handle Stripe webhooks
+
+
+app.use(express.json()) // to parse JSON bodies
+
 
 app.use(clerkMiddleware())
 app.use('/api/clerk', clerkWebHooks)
@@ -46,3 +51,4 @@ const port = process.env.PORT || 3000
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })
+

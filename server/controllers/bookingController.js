@@ -98,6 +98,7 @@ export const getUserBookings = async (req, res) => {
       .populate('hotel')
       .sort({ createdAt: -1 })
 
+
     res.json({
       success: true,
       bookings
@@ -118,17 +119,16 @@ export const getHotelBookings = async (req, res) => {
         success: false,
         message: 'Hotel not found.'
       })
-    }
-
-    const bookings = await Booking.find({ hotel: req.user._id })
+    }    
+    const bookings = await Booking.find({ hotel: hotel._id })
       .populate('room hotel user')
       .sort({ createdAt: -1 })
+          
     const totalBookings = bookings.length
     const totalRevenue = bookings.reduce(
       (acc, booking) => acc + booking.totalPrice,
       0
-    )
-
+    )    
     res.json({
       success: true,
       dashboardData: { bookings, totalBookings, totalRevenue }
@@ -261,18 +261,17 @@ export const stripePayment = async (req, res) => {
         bookingId: booking._id.toString()
       }
     })
-    
+     
     res.json({
       success: true,
       url: checkOutSession.url
     })
 
-
   } catch (error) {
     console.error('Stripe payment error:', error.message)
     res.json({
       success: false,
-      message: "Payment failed. Please try again later."
+      message: 'Payment failed. Please try again later.'
     })
   }
 }
