@@ -7,7 +7,7 @@ import { useLocation, Routes, Route } from "react-router-dom";
 import AllRooms from "./pages/AllRooms";
 import RoomDetails from "./pages/RoomDetails";
 // import Mybookings from "./pages/Mybookings";
-import Mybookings from "./pages/MyBookings"; // ✅ matches exact file name
+import Mybookings from "./pages/MyBookings"; 
 
 import HotelReg from "./components/HotelReg";
 import Layout from "./pages/hotelOwner/Layout";

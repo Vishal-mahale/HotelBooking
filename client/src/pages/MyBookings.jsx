@@ -35,8 +35,9 @@ function Mybookings() {
         { bookingId },
         { headers: { Authorization: `Bearer ${await getToken()}` } }
       );
-     
+        
       if (data.success) {
+        console.log(data);
         window.location.href = data.url;
       } else {
         toast.error(data.message);

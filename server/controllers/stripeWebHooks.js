@@ -3,6 +3,7 @@ import Booking from '../models/Booking.js'
 
 // API to handle Stripe webhooks
 export const stripeWebHooks = async (req, res) => {
+
   console.log('Received Stripe webhook:', req.body)
 
   const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
@@ -52,17 +53,23 @@ export const stripeWebHooks = async (req, res) => {
         isPaid: true,
         paymentMethod: 'Stripe'
       })
+      
       console.log('Updated booking:', updatedBooking)
+
       return res.json({ received: true })
+  
     } else {
       console.log(`Unhandled event type ${event.type}`)
       return res.json({ received: true })
     }
   } catch (error) {
+
     console.error('Error processing webhook event:', error)
+    
     return res.status(500).json({
       error: 'Internal server error',
       received: false
     })
+    
   }
 }
